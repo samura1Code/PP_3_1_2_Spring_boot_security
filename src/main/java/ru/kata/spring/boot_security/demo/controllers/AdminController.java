@@ -8,12 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ru.kata.spring.boot_security.demo.entity.User;
 import ru.kata.spring.boot_security.demo.services.RoleService;
 import ru.kata.spring.boot_security.demo.services.UserService;
-import org.springframework.web.servlet.view.RedirectView;
 
 @Controller
 @RequestMapping("/admin")
@@ -38,7 +36,7 @@ public class AdminController {
     @GetMapping("/newUser")
     public String showNewUserForm(Model model) {
         model.addAttribute("user", new User());
-        model.addAttribute("roles", roleService.findAll()); // добавлено для получения всех ролей
+        model.addAttribute("roles", roleService.findAll());
         return "newUser";
     }
 
