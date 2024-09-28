@@ -4,25 +4,58 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit User</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        form {
+            width: 300px;
+            margin: auto;
+        }
+        input, select {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 8px;
+        }
+        button {
+            padding: 10px;
+            width: 100%;
+        }
+        .error {
+            color: red;
+            font-size: 12px;
+        }
+    </style>
 </head>
+<body>
+
+<!-- Форма выхода -->
 <form th:action="@{/logout}" method="post">
     <button type="submit">Logout</button>
 </form>
-<body>
+
 <h1>Edit User</h1>
-<form th:action="@{/admin/update/{id}(id=${user.id})}" method="post">
-    <input type="hidden" name="id" th:value="${user.id}">
 
+<!-- Форма редактирования пользователя -->
+<form th:action="@{/admin/update/{id}(id=${user.id})}" th:object="${user}" method="post">
+    <input type="hidden" th:field="*{id}">
+
+    <!-- Поле ввода для имени пользователя -->
     <label for="username">Username:</label>
-    <input type="text" id="username" name="username" th:value="${user.username}" required>
+    <input type="text" id="username" th:field="*{username}">
+    <!-- Вывод ошибок для поля username, если такие есть -->
+    <div class="error" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
 
+    <!-- Поле ввода для пароля -->
     <label for="password">Password:</label>
-    <input type="password" id="password" name="password" required>
+    <input type="password" id="password" th:field="*{password}">
+    <!-- Вывод ошибок для поля password, если такие есть -->
+    <div class="error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
 
+    <!-- Поле для выбора ролей -->
     <label for="roles">Roles:</label>
-    <select id="roles" name="roles" multiple>
-        <option th:each="role : ${allRoles}" th:value="${role.id}"
-                th:text="${role.name}" th:selected="${user.roles.contains(role)}"></option>
+    <select id="roles" name="roles" multiple th:field="*{roles}">
+        <option th:each="role : ${allRoles}" th:value="${role.id}" th:text="${role.name}"></option>
     </select>
 
     <button type="submit">Update</button>

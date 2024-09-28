@@ -17,6 +17,14 @@
         th {
             background-color: #f2f2f2;
         }
+
+        .error-message {
+            color: red;
+            font-weight: bold;
+            font-size: 5em; /* Увеличение шрифта */
+            margin-bottom: 20px; /* Отступ снизу */
+        }
+
     </style>
     <form th:action="@{/logout}" method="post">
         <button type="submit">Logout</button>
@@ -24,12 +32,21 @@
 </head>
 <body>
 <div>
+
+
     <div>
         <h1>User List</h1>
+
+        <!-- Блок для отображения сообщения об ошибке -->
+        <div th:if="${msgError}" class="error-message">
+            <p th:text="${msgError}"></p>
+        </div>
+
         <a href="/admin/newUser" style="text-decoration: none;">
             <button type="button">Создать пользователя</button>
         </a>
     </div>
+
     <table>
         <thead>
         <tr>
@@ -51,10 +68,10 @@
             </td>
 
             <td>
-                <form action="/admin/delete" method="post">
-                    <input type="hidden" name="id" th:value="${user.id}">
+                <form th:action="@{/admin/delete/{id}(id=${user.id})}" method="post">
                     <button type="submit">Delete</button>
                 </form>
+
 
                 <form th:action="@{/admin/update/{id}(id=${user.id})}" method="get">
                     <button type="submit">Update</button>
